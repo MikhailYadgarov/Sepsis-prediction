@@ -20,7 +20,7 @@ BASE_PATH =  "C:/Your/Path/Here"  # <-- Change to your real path
 TRAIN_PATH = os.path.join(BASE_PATH, "train.csv")
 VAL_PATH = os.path.join(BASE_PATH, "val.csv")
 TEST_PATH = os.path.join(BASE_PATH, "test.csv")
-RICD_PATH = os.path.join(BASE_PATH, "external.csv")
+EXTERNAL_PATH = os.path.join(BASE_PATH, "external.csv")
 
 FEATURES = [
     'age', 'sex', 'wbc', 'plt', 'crp', 'hb', 'albumin', 'lactate', 'pH',
@@ -178,7 +178,7 @@ def main(model_type):
 
     apply_model(model, selected, TRAIN_PATH, os.path.join(BASE_PATH, f"{model_name}_train.csv"))
     apply_model(model, selected, TEST_PATH, os.path.join(BASE_PATH, f"{model_name}_test.csv"))
-    apply_model(model, selected, RICD_PATH, os.path.join(BASE_PATH, f"{model_name}_ricd.csv"))
+    apply_model(model, selected, EXTERNAL_PATH, os.path.join(BASE_PATH, f"{model_name}_external.csv"))
 
 if __name__ == "__main__":
     main("ada")  # change to 'ada', 'rf', or 'lgb' as needed
