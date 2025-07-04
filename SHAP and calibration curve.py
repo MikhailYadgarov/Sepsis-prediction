@@ -10,16 +10,13 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-# === Paths ===
 base_path = r"C:\Your\Path\Here"  # <-- Replace with your actual path
 model_path = os.path.join(base_path, "example.model")  # Saved model
 data_path = os.path.join(base_path, "example.csv")  # Dataset to analyze
 output_prefix = "example"
 
-# === Load model ===
 model = joblib.load(model_path)
 
-# === Load and prepare data ===
 df = pd.read_csv(data_path, sep=';')
 df['sepsis_3'] = df['sepsis_3'].astype(int)
 
@@ -28,7 +25,6 @@ df = df[predictors + ['sepsis_3']].fillna(-999)
 X = df[predictors].astype(float)
 y = df['sepsis_3']
 
-# === Apply Platt scaling ===
 calibrated_model = CalibratedClassifierCV(model, method='sigmoid', cv='prefit')
 calibrated_model.fit(X, y)
 
@@ -56,7 +52,6 @@ feature_importance = pd.DataFrame({
 
 feature_importance.to_csv(os.path.join(base_path, f"{output_prefix}_feature_importance.csv"), sep=';', index=False)
 
-# === Save predictions ===
 df[['sepsis_3', 'sepsis_score', 'sepsis_predicted']].to_csv(
     os.path.join(base_path, f"{output_prefix}_predictions.csv"), sep=';', index=False
 )
@@ -69,7 +64,6 @@ calibration_data = pd.DataFrame({
 })
 calibration_data.to_csv(os.path.join(base_path, f"{output_prefix}_calibration_curve.csv"), sep=';', index=False)
 
-# === Plot calibration curve (zoomed 0–0.2) ===
 plt.figure(figsize=(6, 6))
 plt.plot(prob_pred, prob_true, marker='o', label='Calibrated model')
 plt.plot([0, 1], [0, 1], linestyle='--', color='gray', label='Perfect calibration')
