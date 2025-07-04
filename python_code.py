@@ -181,5 +181,5 @@ def main(model_type):
     apply_model(model, selected, EXTERNAL_PATH, os.path.join(BASE_PATH, f"{model_name}_external.csv"))
 
 if __name__ == "__main__":
-    main("ada")  # change to 'ada', 'rf', or 'lgb' as needed
+    main("xgb")  # change to 'ada', 'rf', or 'lgb' as needed
 
