@@ -28,13 +28,13 @@ y = df['sepsis_3']
 calibrated_model = CalibratedClassifierCV(model, method='sigmoid', cv='prefit')
 calibrated_model.fit(X, y)
 
-# === Predictions and AUROC ===
+# Predictions and AUROC
 df['sepsis_score'] = calibrated_model.predict_proba(X)[:, 1]
 df['sepsis_predicted'] = (df['sepsis_score'] >= 0.5).astype(int)
 auroc = roc_auc_score(y, df['sepsis_score'])
 print(f"\n AUROC: {auroc:.4f}")
 
-# === SHAP summary plot ===
+# SHAP summary plot
 explainer = shap.Explainer(model)
 shap_values = explainer(X)
 
@@ -43,7 +43,7 @@ shap.summary_plot(shap_values, X, show=False)
 plt.savefig(os.path.join(base_path, f"{output_prefix}_shap_summary.png"), bbox_inches='tight', dpi=600)
 plt.close()
 
-# === Feature importance CSV ===
+# Feature importance CSV
 feature_importance = pd.DataFrame({
     'feature': X.columns,
     'model_importance': model.feature_importances_,
@@ -56,7 +56,7 @@ df[['sepsis_3', 'sepsis_score', 'sepsis_predicted']].to_csv(
     os.path.join(base_path, f"{output_prefix}_predictions.csv"), sep=';', index=False
 )
 
-# === Calibration curve ===
+# Calibration curve
 prob_true, prob_pred = calibration_curve(y, df['sepsis_score'], n_bins=100, strategy='uniform')
 calibration_data = pd.DataFrame({
     'predicted_probability': prob_pred,
